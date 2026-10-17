@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="720" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#111"/>
+    </marker>
+    <marker id="arb" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#1f6fd6"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <text x="680" y="30" text-anchor="middle" font-size="20" font-weight="bold">SAFRDO — Single-Instruction Datapath &amp; Control</text>
+  <text x="680" y="50" text-anchor="middle" font-size="12" fill="#555">N = 50 rows, 4 columns x 8-bit. Instruction[15:0] = {imm[15:8], mask[5:2], opcode[1:0]}</text>
+
+  <!-- ===================== CONTROL UNIT ===================== -->
+  <rect x="196" y="66" width="876" height="60" rx="8" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="2"/>
+  <text x="634" y="92" text-anchor="middle" font-size="15" font-weight="bold" fill="#13518f">CONTROL UNIT  (safrdo_controller — FSM)</text>
+  <text x="634" y="110" text-anchor="middle" font-size="11" fill="#13518f">IDLE -&gt; LATCH -&gt; LOAD_B -&gt; STREAM_A -&gt; FLUSH -&gt; DRAIN_JOIN -&gt; DONE</text>
+  <!-- inputs into control unit from the left -->
+  <line x1="120" y1="96" x2="196" y2="96" stroke="#1f6fd6" stroke-width="1.5" marker-end="url(#arb)"/>
+  <text x="116" y="84" text-anchor="end" font-size="10.5" fill="#13518f">instruction[15:0]</text>
+  <text x="116" y="100" text-anchor="end" font-size="10.5" fill="#13518f">cpu_start</text>
+  <text x="116" y="114" text-anchor="end" font-size="10.5" fill="#13518f">num_a_rows / num_b_rows</text>
+
+  <!-- ===================== DATAPATH BLOCKS ===================== -->
+  <!-- UART Bridge -->
+  <rect x="24" y="300" width="104" height="150" rx="6" fill="#fff4e6" stroke="#c47f1a" stroke-width="1.5"/>
+  <text x="76" y="360" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#8a5410">UART</text>
+  <text x="76" y="378" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#8a5410">BRIDGE</text>
+  <text x="76" y="398" text-anchor="middle" font-size="9.5" fill="#8a5410">(host I/O:</text>
+  <text x="76" y="410" text-anchor="middle" font-size="9.5" fill="#8a5410">load + drain)</text>
+
+  <!-- BRAM A / BRAM B -->
+  <rect x="178" y="250" width="124" height="52" rx="6" fill="#f6f6f6" stroke="#222" stroke-width="1.5"/>
+  <text x="240" y="272" text-anchor="middle" font-size="12" font-weight="bold">Table A Mem</text>
+  <text x="240" y="288" text-anchor="middle" font-size="10" fill="#555">BRAM A</text>
+
+  <rect x="178" y="420" width="124" height="52" rx="6" fill="#f6f6f6" stroke="#222" stroke-width="1.5"/>
+  <text x="240" y="442" text-anchor="middle" font-size="12" font-weight="bold">Table B Mem</text>
+  <text x="240" y="458" text-anchor="middle" font-size="10" fill="#555">BRAM B (resident)</text>
+
+  <!-- Operand aligner -->
+  <rect x="348" y="232" width="116" height="46" rx="6" fill="#f6f6f6" stroke="#222" stroke-width="1.5"/>
+  <text x="406" y="252" text-anchor="middle" font-size="11.5" font-weight="bold">Operand Aligner</text>
+  <text x="406" y="268" text-anchor="middle" font-size="9.5" fill="#555">imm -&gt; column lanes</text>
+
+  <!-- MUX sel_data_A -->
+  <polygon points="500,300 530,316 530,362 500,378" fill="#f0eaff" stroke="#5b3fa6" stroke-width="1.5"/>
+  <text x="515" y="343" text-anchor="middle" font-size="11" font-weight="bold" fill="#4a2f96">M</text>
+  <text x="515" y="394" text-anchor="middle" font-size="9.5" fill="#4a2f96">sel_data_A</text>
+
+  <!-- 2D systolic array -->
+  <rect x="576" y="268" width="176" height="214" rx="6" fill="#eef7ee" stroke="#2f7d32" stroke-width="2"/>
+  <text x="664" y="356" text-anchor="middle" font-size="14" font-weight="bold" fill="#1f5a22">2D Systolic Array</text>
+  <text x="664" y="374" text-anchor="middle" font-size="10.5" fill="#1f5a22">pe_array_2d</text>
+  <text x="664" y="390" text-anchor="middle" font-size="10.5" fill="#1f5a22">50 x 4 comparator PEs</text>
+  <text x="664" y="408" text-anchor="middle" font-size="9.5" fill="#555">A streams down, B resident</text>
+
+  <!-- Accumulation array -->
+  <rect x="800" y="272" width="158" height="62" rx="6" fill="#f6f6f6" stroke="#222" stroke-width="1.5"/>
+  <text x="879" y="296" text-anchor="middle" font-size="11.5" font-weight="bold">Accumulation Array</text>
+  <text x="879" y="312" text-anchor="middle" font-size="9.5" fill="#555">OR/NOR cascade -&gt; t_i</text>
+  <text x="879" y="326" text-anchor="middle" font-size="9.5" fill="#555">(+ accum_valid_d align)</text>
+
+  <!-- Join collector -->
+  <rect x="800" y="398" width="158" height="84" rx="6" fill="#f6f6f6" stroke="#222" stroke-width="1.5"/>
+  <text x="879" y="420" text-anchor="middle" font-size="11.5" font-weight="bold">Join Collector</text>
+  <text x="879" y="436" text-anchor="middle" font-size="9.5" fill="#555">50 shift regs (match matrix)</text>
+  <text x="879" y="450" text-anchor="middle" font-size="9.5" fill="#555">read port: cursor -&gt; pair</text>
+  <text x="879" y="468" text-anchor="middle" font-size="9.5" fill="#555">pure datapath (no FSM)</text>
+
+  <!-- Output router -->
+  <rect x="1006" y="300" width="116" height="170" rx="6" fill="#fdeef2" stroke="#a8245a" stroke-width="2"/>
+  <text x="1064" y="372" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#7d1843">Output</text>
+  <text x="1064" y="390" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#7d1843">Router</text>
+  <text x="1064" y="410" text-anchor="middle" font-size="9.5" fill="#7d1843">00 vec / 01 scalar</text>
+  <text x="1064" y="423" text-anchor="middle" font-size="9.5" fill="#7d1843">10 join</text>
+
+  <!-- ===================== DATA BUSES (black) ===================== -->
+  <!-- bridge writes both BRAMs -->
+  <path d="M128,345 L160,345 L160,276 L178,276" fill="none" stroke="#111" stroke-width="1.5" marker-end="url(#ar)"/>
+  <path d="M128,405 L160,405 L160,446 L178,446" fill="none" stroke="#111" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="150" y="338" font-size="9" fill="#333">load</text>
+
+  <!-- BRAM A -> aligner is NOT; BRAM A -> mux (bottom input) -->
+  <path d="M302,276 L430,276 L430,368 L500,368" fill="none" stroke="#111" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="338" y="270" font-size="9.5" fill="#333">data_A [32b]</text>
+  <!-- aligner -> mux (top input) -->
+  <path d="M464,255 L482,255 L482,312 L500,312" fill="none" stroke="#111" stroke-width="1.5" marker-end="url(#ar)"/>
+  <!-- mux -> array (A operand) -->
+  <path d="M530,339 L552,339 L552,318 L576,318" fill="none" stroke="#111" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="536" y="312" font-size="9.5" fill="#333">A [4x8]</text>
+  <!-- BRAM B -> array (B operand) -->
+  <path d="M302,446 L552,446 L552,438 L576,438" fill="none" stroke="#111" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="430" y="440" font-size="9.5" fill="#333">data_B [4x8]</text>
+
+  <!-- array outputs: row_match[50] + a_valid[50] fan-out -->
+  <path d="M752,300 L800,300" fill="none" stroke="#111" stroke-width="2" marker-end="url(#ar)"/>
+  <path d="M752,440 L800,440" fill="none" stroke="#111" stroke-width="2" marker-end="url(#ar)"/>
+  <text x="754" y="294" font-size="9.5" fill="#333">row_match[50] + a_valid[50]</text>
+  <!-- array vector straight to router (selection) -->
+  <path d="M770,320 L770,250 L990,250 L990,330 L1006,330" fill="none" stroke="#111" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="846" y="244" font-size="9.5" fill="#333">vector (selection) -&gt; router</text>
+
+  <!-- accum -> router -->
+  <path d="M958,303 L982,303 L982,360 L1006,360" fill="none" stroke="#111" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="960" y="297" font-size="9.5" fill="#333">t_i</text>
+  <!-- join -> router -->
+  <path d="M958,440 L982,440 L982,410 L1006,410" fill="none" stroke="#111" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="958" y="455" font-size="9.5" fill="#333">pair_data/valid</text>
+
+  <!-- router -> final out -> back to bridge -->
+  <path d="M1122,430 L1180,430 L1180,560 L76,560 L76,450" fill="none" stroke="#111" stroke-width="2" marker-end="url(#ar)"/>
+  <text x="600" y="555" font-size="10.5" fill="#333">final_data_out / final_valid_out [50b]  -&gt;  Bridge buffers, then drains over UART</text>
+
+  <!-- ===================== CONTROL SIGNALS (blue, from control unit down) ===================== -->
+  <!-- to BRAM read addr -->
+  <path d="M240,126 L240,250" stroke="#1f6fd6" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arb)"/>
+  <text x="246" y="180" font-size="9.5" fill="#13518f">bram_addr_A</text>
+  <path d="M214,126 L214,200 L214,420" stroke="#1f6fd6" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arb)"/>
+  <text x="150" y="200" font-size="9.5" fill="#13518f">bram_addr_B</text>
+  <!-- to aligner -->
+  <path d="M406,126 L406,232" stroke="#1f6fd6" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arb)"/>
+  <text x="412" y="170" font-size="9.5" fill="#13518f">opcode, mask, imm</text>
+  <!-- to mux -->
+  <path d="M515,126 L515,300" stroke="#1f6fd6" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arb)"/>
+  <text x="521" y="160" font-size="9.5" fill="#13518f">sel_data_A</text>
+  <!-- to array -->
+  <path d="M664,126 L664,268" stroke="#1f6fd6" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arb)"/>
+  <text x="670" y="160" font-size="9.5" fill="#13518f">mask, load_en, valid_in</text>
+  <!-- to accum -->
+  <path d="M906,126 L906,272" stroke="#1f6fd6" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arb)"/>
+  <text x="912" y="160" font-size="9.5" fill="#13518f">accum_mode</text>
+  <!-- to join -->
+  <path d="M820,126 L820,360 L820,398" stroke="#1f6fd6" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arb)"/>
+  <text x="700" y="392" font-size="9.5" fill="#13518f">clear, drain_en, b_sel, p_sel, n_a</text>
+  <!-- to router -->
+  <path d="M1064,126 L1064,300" stroke="#1f6fd6" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arb)"/>
+  <text x="1070" y="160" font-size="9.5" fill="#13518f">out_sel[1:0]</text>
+  <!-- done_signal back to bridge -->
+  <path d="M196,112 L150,112 L150,300" stroke="#1f6fd6" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arb)"/>
+  <text x="100" y="250" font-size="9.5" fill="#13518f">done_signal</text>
+
+  <!-- legend -->
+  <rect x="1150" y="600" width="190" height="74" rx="6" fill="#fafafa" stroke="#999"/>
+  <line x1="1162" y1="620" x2="1192" y2="620" stroke="#111" stroke-width="2"/>
+  <text x="1198" y="624" font-size="10" fill="#333">data bus</text>
+  <line x1="1162" y1="642" x2="1192" y2="642" stroke="#1f6fd6" stroke-width="1.6" stroke-dasharray="5,3"/>
+  <text x="1198" y="646" font-size="10" fill="#13518f">control signal</text>
+  <text x="1160" y="666" font-size="9" fill="#777">SAFRDO datapath (Fig. analog of H&amp;H 7.27)</text>
+</svg>

@@ -1,0 +1,12 @@
+work/
+__pycache__/
+*.pyc
+*.exe
+*.o
+*.wlf
+*.dbg
+*.vcd
+wlft*
+transcript
+modelsim.ini
+*.log

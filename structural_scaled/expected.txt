@@ -1,0 +1,8 @@
+NUM_ROWS      100
+accra_code    1
+selection_rows [0, 13, 29, 45, 61, 77, 93]
+selection_vec  0200020002000200020002001
+intersection  10 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+difference    90
+join_full     10
+join_city     628

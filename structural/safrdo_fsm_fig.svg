@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="940" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="11" markerHeight="11" refX="8.5" refY="3.2" orient="auto">
+      <path d="M0,0 L9,3.2 L0,6.4 Z" fill="#111"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <text x="500" y="36" text-anchor="middle" font-size="21" font-weight="bold">SAFRDO — Complete Controller FSM</text>
+  <text x="500" y="57" text-anchor="middle" font-size="12" fill="#555">Analog of H&amp;H Fig. 7.39: one state per clock; signals listed in a bubble are asserted in that state (all others = 0). Edges labeled with the branch condition.</text>
+
+  <!-- ============ STATE BUBBLES ============ -->
+  <!-- IDLE -->
+  <circle cx="185" cy="125" r="62" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="2"/>
+  <text x="185" y="121" text-anchor="middle" font-size="14" font-weight="bold" fill="#13518f">IDLE</text>
+  <text x="185" y="140" text-anchor="middle" font-size="9.5" fill="#444">(all enables = 0)</text>
+  <text x="115" y="80" text-anchor="middle" font-size="11" font-weight="bold" fill="#666">S0: Idle / Wait</text>
+
+  <!-- LATCH -->
+  <circle cx="185" cy="300" r="62" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="2"/>
+  <text x="185" y="292" text-anchor="middle" font-size="14" font-weight="bold" fill="#13518f">LATCH</text>
+  <text x="185" y="310" text-anchor="middle" font-size="9.5" fill="#444">join_clear = 1</text>
+  <text x="185" y="324" text-anchor="middle" font-size="9.5" fill="#444">IR &#8592; instruction_in</text>
+  <text x="92" y="262" text-anchor="middle" font-size="11" font-weight="bold" fill="#666">S1: Decode</text>
+
+  <!-- LOAD_B -->
+  <circle cx="185" cy="475" r="62" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="2"/>
+  <text x="185" y="467" text-anchor="middle" font-size="14" font-weight="bold" fill="#13518f">LOAD_B</text>
+  <text x="185" y="485" text-anchor="middle" font-size="9.5" fill="#444">load_en = 1</text>
+  <text x="185" y="499" text-anchor="middle" font-size="9.5" fill="#444">B_counter++</text>
+  <text x="90" y="437" text-anchor="middle" font-size="11" font-weight="bold" fill="#666">S2: Load B</text>
+
+  <!-- STREAM_A -->
+  <circle cx="185" cy="650" r="62" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="2"/>
+  <text x="185" y="642" text-anchor="middle" font-size="14" font-weight="bold" fill="#13518f">STREAM_A</text>
+  <text x="185" y="660" text-anchor="middle" font-size="9.5" fill="#444">valid_in = 1</text>
+  <text x="185" y="674" text-anchor="middle" font-size="9.5" fill="#444">A_counter++</text>
+  <text x="92" y="612" text-anchor="middle" font-size="11" font-weight="bold" fill="#666">S3: Stream A</text>
+
+  <!-- FLUSH -->
+  <circle cx="185" cy="825" r="62" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="2"/>
+  <text x="185" y="821" text-anchor="middle" font-size="14" font-weight="bold" fill="#13518f">FLUSH</text>
+  <text x="185" y="839" text-anchor="middle" font-size="9.5" fill="#444">flush_counter++</text>
+  <text x="93" y="787" text-anchor="middle" font-size="11" font-weight="bold" fill="#666">S4: Drain pipe</text>
+
+  <!-- DRAIN_JOIN -->
+  <circle cx="540" cy="825" r="64" fill="#eef7ee" stroke="#2f7d32" stroke-width="2"/>
+  <text x="540" y="813" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#1f5a22">DRAIN_JOIN</text>
+  <text x="540" y="831" text-anchor="middle" font-size="9.5" fill="#1f5a22">join_drain_en = 1</text>
+  <text x="540" y="845" text-anchor="middle" font-size="9.5" fill="#1f5a22">sweep b_sel, p_sel</text>
+  <text x="540" y="745" text-anchor="middle" font-size="11" font-weight="bold" fill="#666">S5: Join sweep (opcode 01 only)</text>
+
+  <!-- DONE -->
+  <circle cx="760" cy="475" r="62" fill="#fdecea" stroke="#c0392b" stroke-width="2"/>
+  <text x="760" y="471" text-anchor="middle" font-size="14" font-weight="bold" fill="#922">DONE</text>
+  <text x="760" y="489" text-anchor="middle" font-size="9.5" fill="#444">done_signal = 1</text>
+  <text x="760" y="405" text-anchor="middle" font-size="11" font-weight="bold" fill="#666">S6: Done</text>
+
+  <!-- ============ TRANSITIONS ============ -->
+  <!-- Reset into IDLE -->
+  <line x1="185" y1="30" x2="185" y2="61" stroke="#111" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="200" y="46" font-size="10.5" font-weight="bold" fill="#111">Reset</text>
+
+  <!-- IDLE self loop (cpu_start = 0) -->
+  <path d="M128,100 q-58,-6 -58,25 q0,31 53,21" fill="none" stroke="#111" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="40" y="128" font-size="10" fill="#111">cpu_start</text>
+  <text x="55" y="141" font-size="10" fill="#111">= 0</text>
+
+  <!-- IDLE -> LATCH -->
+  <line x1="185" y1="187" x2="185" y2="236" stroke="#111" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="195" y="216" font-size="10.5" fill="#111">cpu_start = 1</text>
+
+  <!-- LATCH -> LOAD_B -->
+  <line x1="185" y1="362" x2="185" y2="411" stroke="#111" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- LOAD_B self loop -->
+  <path d="M247,452 q70,-10 70,23 q0,33 -67,21" fill="none" stroke="#111" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="322" y="470" font-size="10" fill="#111">B_counter &#8800;</text>
+  <text x="322" y="483" font-size="10" fill="#111">B_DEPTH&#8722;1</text>
+
+  <!-- LOAD_B -> STREAM_A -->
+  <line x1="185" y1="537" x2="185" y2="586" stroke="#111" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="195" y="567" font-size="10" fill="#111">B_counter = B_DEPTH&#8722;1</text>
+
+  <!-- STREAM_A self loop -->
+  <path d="M247,627 q70,-10 70,23 q0,33 -67,21" fill="none" stroke="#111" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="322" y="645" font-size="10" fill="#111">A_counter &#8800;</text>
+  <text x="322" y="658" font-size="10" fill="#111">limit&#8722;1</text>
+
+  <!-- STREAM_A -> FLUSH -->
+  <line x1="185" y1="712" x2="185" y2="761" stroke="#111" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="195" y="742" font-size="10" fill="#111">A_counter = limit&#8722;1</text>
+
+  <!-- FLUSH self loop -->
+  <path d="M128,855 q-60,12 -60,-21 q0,-33 55,-23" fill="none" stroke="#111" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="20" y="862" font-size="10" fill="#111">flush &#8800;</text>
+  <text x="20" y="875" font-size="10" fill="#111">B_DEPTH&#8722;1</text>
+
+  <!-- FLUSH -> DRAIN_JOIN  (opcode = JOIN) -->
+  <line x1="247" y1="825" x2="474" y2="825" stroke="#111" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="360" y="813" text-anchor="middle" font-size="10" fill="#111">flush = B_DEPTH&#8722;1</text>
+  <text x="360" y="843" text-anchor="middle" font-size="10" font-weight="bold" fill="#1f5a22">&amp; Op = JOIN (01)</text>
+
+  <!-- FLUSH -> DONE  (opcode != JOIN) : diagonal up-right -->
+  <path d="M240,786 Q470,560 700,500" fill="none" stroke="#111" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="470" y="640" text-anchor="middle" font-size="10" fill="#111">flush = B_DEPTH&#8722;1</text>
+  <text x="470" y="624" text-anchor="middle" font-size="10" font-weight="bold" fill="#922">&amp; Op &#8800; JOIN</text>
+
+  <!-- DRAIN_JOIN self loop -->
+  <path d="M598,852 q66,14 66,-23 q0,-37 -60,-26" fill="none" stroke="#111" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="672" y="828" font-size="10" fill="#111">cursor not</text>
+  <text x="672" y="841" font-size="10" fill="#111">at last pair</text>
+
+  <!-- DRAIN_JOIN -> DONE -->
+  <path d="M572,768 Q700,640 745,532" fill="none" stroke="#111" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="700" y="690" text-anchor="middle" font-size="10" fill="#111">b_sel = N_B&#8722;1</text>
+  <text x="700" y="704" text-anchor="middle" font-size="10" fill="#111">&amp; p_sel = N_A&#8722;1</text>
+
+  <!-- DONE -> IDLE  (long return up the right, across the top) -->
+  <path d="M760,413 L760,130 Q760,70 700,70 L255,70 Q205,70 200,90" fill="none" stroke="#111" stroke-width="1.6" stroke-dasharray="2,0" marker-end="url(#arr)"/>
+  <text x="500" y="62" text-anchor="middle" font-size="10.5" fill="#111">unconditional &#8594; back to IDLE</text>
+
+  <!-- ============ DECODER SIDE-BOX (opcode-held outputs) ============ -->
+  <rect x="600" y="120" width="360" height="200" rx="9" fill="#f6f6f6" stroke="#222" stroke-width="1.4"/>
+  <text x="780" y="146" text-anchor="middle" font-size="12.5" font-weight="bold">Decoder outputs — held for the whole instruction</text>
+  <text x="780" y="164" text-anchor="middle" font-size="10" fill="#666">(combinational from opcode = IR[1:0], like ALUOp; not per-state)</text>
+
+  <text x="620" y="192" font-size="11" font-weight="bold" fill="#13518f">opcode 00  Selection</text>
+  <text x="640" y="208" font-size="10" fill="#444">sel_data_A=1 &#183; out_sel=00 (vector) &#183; accum_mode=0</text>
+  <text x="620" y="232" font-size="11" font-weight="bold" fill="#13518f">opcode 01  Join</text>
+  <text x="640" y="248" font-size="10" fill="#444">sel_data_A=0 &#183; out_sel=10 (pair stream) &#183; accum_mode=0</text>
+  <text x="620" y="272" font-size="11" font-weight="bold" fill="#13518f">opcode 10  Intersection</text>
+  <text x="640" y="288" font-size="10" fill="#444">sel_data_A=0 &#183; out_sel=01 (scalar) &#183; accum_mode=0</text>
+  <text x="620" y="308" font-size="11" font-weight="bold" fill="#13518f">opcode 11  Difference</text>
+  <text x="640" y="324" font-size="10" fill="#444">sel_data_A=0 &#183; out_sel=01 (scalar) &#183; accum_mode=1 (NOR)</text>
+
+  <!-- footnote -->
+  <text x="30" y="912" font-size="10.5" fill="#777">limit = (opcode 00) ? TABLE_A_DEPTH : num_a_rows  &#8212; Table-A ops are bounded to real loaded rows so zero-pad slots never compare (no phantom pairs).</text>
+  <text x="30" y="928" font-size="10.5" fill="#777">valid_in is registered one cycle (valid_in &#8592; valid_in_comb) to align with BRAM-A read latency. Only the JOIN path visits DRAIN_JOIN; all other ops go FLUSH &#8594; DONE.</text>
+</svg>

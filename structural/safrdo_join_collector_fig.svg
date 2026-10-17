@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="740" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="al" markerWidth="10" markerHeight="10" refX="1" refY="3" orient="auto"><path d="M9,0 L0,3 L9,6 Z" fill="#111"/></marker>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#111"/></marker>
+    <marker id="alg" markerWidth="9" markerHeight="9" refX="1" refY="3" orient="auto"><path d="M8,0 L0,3 L8,6 Z" fill="#999"/></marker>
+    <marker id="ab" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1f6fd6"/></marker>
+    <marker id="ao" markerWidth="11" markerHeight="11" refX="7" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#d35400"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <text x="560" y="34" text-anchor="middle" font-size="21" font-weight="bold">Join Collector — the match matrix in flip-flops (NUM_ROWS = 4)</text>
+  <text x="560" y="55" text-anchor="middle" font-size="12" fill="#555">One shift register per B-row captures that row's match bit as Table A streams. Then the controller sweeps a cursor and reads out the pairs.</text>
+
+  <!-- ============ PHASE 1: CAPTURE GRID ============ -->
+  <text x="60" y="84" font-size="13" font-weight="bold" fill="#13518f">PHASE 1 — CAPTURE  (while Table A streams):  each B-row shifts its match bit LEFT, newest at bit 0.</text>
+
+  <!-- column headers: which A-row each position ends up holding -->
+  <text x="300" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#7a5c00">holds A0</text>
+  <text x="400" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#7a5c00">holds A1</text>
+  <text x="500" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#7a5c00">holds A2</text>
+  <text x="600" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#7a5c00">holds A3</text>
+  <text x="300" y="126" text-anchor="middle" font-size="11" fill="#555">p = 3</text>
+  <text x="400" y="126" text-anchor="middle" font-size="11" fill="#555">p = 2</text>
+  <text x="500" y="126" text-anchor="middle" font-size="11" fill="#555">p = 1</text>
+  <text x="600" y="126" text-anchor="middle" font-size="11" fill="#555">p = 0</text>
+  <text x="650" y="126" text-anchor="start" font-size="10" fill="#888">(bit 0)</text>
+
+  <!-- enable label -->
+  <text x="95" y="262" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#13518f">shift-enable</text>
+  <text x="95" y="277" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#13518f">valid_d[b]</text>
+
+  <!-- match-in label -->
+  <text x="770" y="262" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#111">row_match_in[b]</text>
+  <text x="770" y="277" text-anchor="middle" font-size="10" fill="#555">enters at bit 0</text>
+
+  <!-- ===== ROW B0 (worked example values: 1 0 1 0) ===== -->
+  <text x="215" y="175" text-anchor="middle" font-size="12" font-weight="bold" fill="#13518f">B0  (sr[0])</text>
+  <rect x="260" y="145" width="80" height="50" rx="4" fill="#d8f0d8" stroke="#2f7d32" stroke-width="2"/><text x="300" y="176" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f5a22">1</text>
+  <rect x="360" y="145" width="80" height="50" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.6"/><text x="400" y="176" text-anchor="middle" font-size="16" font-weight="bold" fill="#13518f">0</text>
+  <rect x="460" y="145" width="80" height="50" rx="4" fill="#d8f0d8" stroke="#2f7d32" stroke-width="2"/><text x="500" y="176" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f5a22">1</text>
+  <rect x="560" y="145" width="80" height="50" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.6"/><text x="600" y="176" text-anchor="middle" font-size="16" font-weight="bold" fill="#13518f">0</text>
+  <!-- enable + match-in for B0 -->
+  <path d="M150,170 L256,170" fill="none" stroke="#1f6fd6" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#ab)"/>
+  <path d="M730,170 L645,170" fill="none" stroke="#111" stroke-width="1.6" marker-end="url(#al)"/>
+  <!-- shift arrows (data moves left) -->
+  <path d="M560,170 L544,170" fill="none" stroke="#999" stroke-width="1.4" marker-end="url(#alg)"/>
+  <path d="M460,170 L444,170" fill="none" stroke="#999" stroke-width="1.4" marker-end="url(#alg)"/>
+  <path d="M360,170 L344,170" fill="none" stroke="#999" stroke-width="1.4" marker-end="url(#alg)"/>
+
+  <!-- ===== ROW B1 ===== -->
+  <text x="215" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="#13518f">B1  (sr[1])</text>
+  <rect x="260" y="210" width="80" height="50" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.6"/><text x="300" y="240" text-anchor="middle" font-size="11" fill="#9bb">FF</text>
+  <rect x="360" y="210" width="80" height="50" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.6"/><text x="400" y="240" text-anchor="middle" font-size="11" fill="#9bb">FF</text>
+  <rect x="460" y="210" width="80" height="50" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.6"/><text x="500" y="240" text-anchor="middle" font-size="11" fill="#9bb">FF</text>
+  <rect x="560" y="210" width="80" height="50" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.6"/><text x="600" y="240" text-anchor="middle" font-size="11" fill="#9bb">FF</text>
+  <path d="M150,235 L256,235" fill="none" stroke="#1f6fd6" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#ab)"/>
+  <path d="M730,235 L645,235" fill="none" stroke="#111" stroke-width="1.6" marker-end="url(#al)"/>
+  <path d="M560,235 L544,235" fill="none" stroke="#999" stroke-width="1.4" marker-end="url(#alg)"/>
+  <path d="M460,235 L444,235" fill="none" stroke="#999" stroke-width="1.4" marker-end="url(#alg)"/>
+  <path d="M360,235 L344,235" fill="none" stroke="#999" stroke-width="1.4" marker-end="url(#alg)"/>
+
+  <!-- ===== ROW B2 ===== -->
+  <text x="215" y="305" text-anchor="middle" font-size="12" font-weight="bold" fill="#13518f">B2  (sr[2])</text>
+  <rect x="260" y="275" width="80" height="50" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.6"/><text x="300" y="305" text-anchor="middle" font-size="11" fill="#9bb">FF</text>
+  <rect x="360" y="275" width="80" height="50" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.6"/><text x="400" y="305" text-anchor="middle" font-size="11" fill="#9bb">FF</text>
+  <rect x="460" y="275" width="80" height="50" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.6"/><text x="500" y="305" text-anchor="middle" font-size="11" fill="#9bb">FF</text>
+  <rect x="560" y="275" width="80" height="50" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.6"/><text x="600" y="305" text-anchor="middle" font-size="11" fill="#9bb">FF</text>
+  <path d="M150,300 L256,300" fill="none" stroke="#1f6fd6" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#ab)"/>
+  <path d="M730,300 L645,300" fill="none" stroke="#111" stroke-width="1.6" marker-end="url(#al)"/>
+  <path d="M560,300 L544,300" fill="none" stroke="#999" stroke-width="1.4" marker-end="url(#alg)"/>
+  <path d="M460,300 L444,300" fill="none" stroke="#999" stroke-width="1.4" marker-end="url(#alg)"/>
+  <path d="M360,300 L344,300" fill="none" stroke="#999" stroke-width="1.4" marker-end="url(#alg)"/>
+
+  <!-- ===== ROW B3 ===== -->
+  <text x="215" y="370" text-anchor="middle" font-size="12" font-weight="bold" fill="#13518f">B3  (sr[3])</text>
+  <rect x="260" y="340" width="80" height="50" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.6"/><text x="300" y="370" text-anchor="middle" font-size="11" fill="#9bb">FF</text>
+  <rect x="360" y="340" width="80" height="50" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.6"/><text x="400" y="370" text-anchor="middle" font-size="11" fill="#9bb">FF</text>
+  <rect x="460" y="340" width="80" height="50" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.6"/><text x="500" y="370" text-anchor="middle" font-size="11" fill="#9bb">FF</text>
+  <rect x="560" y="340" width="80" height="50" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.6"/><text x="600" y="370" text-anchor="middle" font-size="11" fill="#9bb">FF</text>
+  <path d="M150,365 L256,365" fill="none" stroke="#1f6fd6" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#ab)"/>
+  <path d="M730,365 L645,365" fill="none" stroke="#111" stroke-width="1.6" marker-end="url(#al)"/>
+  <path d="M560,365 L544,365" fill="none" stroke="#999" stroke-width="1.4" marker-end="url(#alg)"/>
+  <path d="M460,365 L444,365" fill="none" stroke="#999" stroke-width="1.4" marker-end="url(#alg)"/>
+  <path d="M360,365 L344,365" fill="none" stroke="#999" stroke-width="1.4" marker-end="url(#alg)"/>
+
+  <text x="345" y="408" font-size="10" fill="#999">&#8592; data shifts left one position each time the row's enable fires</text>
+
+  <!-- ============ PHASE 2: READ PORT ============ -->
+  <text x="60" y="452" font-size="13" font-weight="bold" fill="#d35400">PHASE 2 — READ  (controller sweeps cursor {b_sel, p_sel} over the grid):</text>
+
+  <rect x="60" y="466" width="470" height="150" rx="8" fill="#fdf0e6" stroke="#d35400" stroke-width="1.6"/>
+  <text x="78" y="492" font-size="12" font-weight="bold" fill="#9a4a10">For each cursor position {b_sel, p_sel}:</text>
+  <text x="90" y="518" font-size="13" fill="#111" font-family="Consolas, monospace">a_idx      = (n_a &#8722; 1) &#8722; p_sel</text>
+  <text x="90" y="542" font-size="13" fill="#111" font-family="Consolas, monospace">pair_valid = drain_en AND sr[b_sel][p_sel]</text>
+  <text x="90" y="566" font-size="13" fill="#111" font-family="Consolas, monospace">pair_data  = { a_idx , b_sel }</text>
+  <text x="78" y="596" font-size="10.5" fill="#7a5c00">The cursor picks ONE flip-flop. If it holds 1, emit that pair. Zeros emit nothing (pair_valid follows the cell).</text>
+
+  <!-- cursor pointer at B0,p1 (the highlighted cell) -->
+  <path d="M500,430 L500,200" fill="none" stroke="#d35400" stroke-width="1.8" stroke-dasharray="4,3" marker-end="url(#ao)"/>
+  <text x="508" y="430" font-size="10" fill="#d35400">cursor reads sr[b_sel][p_sel]</text>
+
+  <!-- ============ WORKED EXAMPLE ============ -->
+  <rect x="560" y="430" width="510" height="290" rx="8" fill="#fffbe6" stroke="#caa" stroke-width="1.4"/>
+  <text x="578" y="456" font-size="13" font-weight="bold">Worked example — B0 matches A0 and A2</text>
+  <text x="578" y="476" font-size="11" fill="#555">As the 4 A-rows stream, B0 shifts in its match bit (newest at bit 0):</text>
+
+  <text x="595" y="502" font-size="12.5" font-family="Consolas, monospace" fill="#111">A0 streams,  match = 1  &#8594;  sr[0] = 0001</text>
+  <text x="595" y="524" font-size="12.5" font-family="Consolas, monospace" fill="#111">A1 streams,  match = 0  &#8594;  sr[0] = 0010</text>
+  <text x="595" y="546" font-size="12.5" font-family="Consolas, monospace" fill="#111">A2 streams,  match = 1  &#8594;  sr[0] = 0101</text>
+  <text x="595" y="568" font-size="12.5" font-family="Consolas, monospace" fill="#111">A3 streams,  match = 0  &#8594;  sr[0] = 1010</text>
+
+  <line x1="578" y1="584" x2="1052" y2="584" stroke="#caa" stroke-width="1"/>
+  <text x="578" y="606" font-size="11.5" font-weight="bold" fill="#1f5a22">Now sweep p (a_idx = 3 &#8722; p):</text>
+  <text x="595" y="628" font-size="12.5" font-family="Consolas, monospace" fill="#1f5a22">p = 3,  cell = 1,  a_idx = 0  &#8594;  emit (A0, B0)</text>
+  <text x="595" y="650" font-size="12.5" font-family="Consolas, monospace" fill="#888">p = 2,  cell = 0,            &#8594;  (skip)</text>
+  <text x="595" y="672" font-size="12.5" font-family="Consolas, monospace" fill="#1f5a22">p = 1,  cell = 1,  a_idx = 2  &#8594;  emit (A2, B0)</text>
+  <text x="595" y="694" font-size="12.5" font-family="Consolas, monospace" fill="#888">p = 0,  cell = 0,            &#8594;  (skip)</text>
+  <text x="578" y="714" font-size="11" font-weight="bold" fill="#111">Result for B0:  pairs (A0,B0) and (A2,B0)  &#8212; exactly the A-rows that matched B0.</text>
+
+  <!-- footnote -->
+  <text x="60" y="732" font-size="10" fill="#777">The shift register absorbs the systolic timing skew automatically (each row owns its own enable, valid_d[b]). The index-flip a_idx = n_a&#8722;1&#8722;p just undoes &#8220;newest sits at bit 0&#8221;.</text>
+</svg>

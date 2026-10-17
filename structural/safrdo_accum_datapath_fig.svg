@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="640" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#111"/></marker>
+    <marker id="art" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#0a8f7a"/></marker>
+    <marker id="arb" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#1f6fd6"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <text x="620" y="34" text-anchor="middle" font-size="21" font-weight="bold">Accumulation Array — Datapath (drawn for NUM_ROWS = 4)</text>
+  <text x="620" y="55" text-anchor="middle" font-size="12" fill="#555">Top: OR-reduction cascade &#8594; mode select &#8594; t_i.   Bottom: valid shift register (same depth) &#8594; valid_out.   One OR+register stage per row.</text>
+
+  <!-- mode-select legend -->
+  <rect x="930" y="74" width="300" height="40" rx="6" fill="#fffbe6" stroke="#caa"/>
+  <text x="945" y="92" font-size="11" font-weight="bold" fill="#7a5">accum_mode = 0 : OR  (intersection)</text>
+  <text x="945" y="108" font-size="11" font-weight="bold" fill="#7a5">accum_mode = 1 : NOR (difference)</text>
+
+  <!-- ===================== TOP: OR CASCADE ===================== -->
+  <!-- row_match_out input labels -->
+  <text x="135" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#111">row_match_out[0]</text>
+  <text x="285" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#111">row_match_out[1]</text>
+  <text x="525" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#111">row_match_out[2]</text>
+  <text x="765" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#111">row_match_out[3]</text>
+
+  <!-- row_match drops -->
+  <path d="M135,108 L135,210" fill="none" stroke="#111" stroke-width="1.6" marker-end="url(#ar)"/>
+  <path d="M285,108 L285,203 L300,203" fill="none" stroke="#111" stroke-width="1.6"/>
+  <path d="M525,108 L525,203 L540,203" fill="none" stroke="#111" stroke-width="1.6"/>
+  <path d="M765,108 L765,203 L780,203" fill="none" stroke="#111" stroke-width="1.6"/>
+
+  <!-- Stage 0 : DFF only -->
+  <rect x="145" y="180" width="70" height="60" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.8"/>
+  <path d="M145,222 L155,228 L145,234 Z" fill="#1f6fd6"/>
+  <text x="180" y="206" text-anchor="middle" font-size="12" font-weight="bold" fill="#13518f">DFF</text>
+  <text x="180" y="222" text-anchor="middle" font-size="9" fill="#13518f">t_chain[0]</text>
+
+  <!-- Stage 1 : OR + DFF -->
+  <path d="M290,185 C310,185 332,198 350,210 C332,222 310,235 290,235 Q306,210 290,185 Z" fill="#fff3d6" stroke="#b8860b" stroke-width="1.8"/>
+  <text x="318" y="214" text-anchor="middle" font-size="12" font-weight="bold" fill="#7a5c00">OR</text>
+  <rect x="395" y="180" width="70" height="60" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.8"/>
+  <path d="M395,222 L405,228 L395,234 Z" fill="#1f6fd6"/>
+  <text x="430" y="206" text-anchor="middle" font-size="12" font-weight="bold" fill="#13518f">DFF</text>
+  <text x="430" y="222" text-anchor="middle" font-size="9" fill="#13518f">t_chain[1]</text>
+
+  <!-- Stage 2 : OR + DFF -->
+  <path d="M530,185 C550,185 572,198 590,210 C572,222 550,235 530,235 Q546,210 530,185 Z" fill="#fff3d6" stroke="#b8860b" stroke-width="1.8"/>
+  <text x="558" y="214" text-anchor="middle" font-size="12" font-weight="bold" fill="#7a5c00">OR</text>
+  <rect x="635" y="180" width="70" height="60" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.8"/>
+  <path d="M635,222 L645,228 L635,234 Z" fill="#1f6fd6"/>
+  <text x="670" y="206" text-anchor="middle" font-size="12" font-weight="bold" fill="#13518f">DFF</text>
+  <text x="670" y="222" text-anchor="middle" font-size="9" fill="#13518f">t_chain[2]</text>
+
+  <!-- Stage 3 : OR + DFF (final) -->
+  <path d="M770,185 C790,185 812,198 830,210 C812,222 790,235 770,235 Q786,210 770,185 Z" fill="#fff3d6" stroke="#b8860b" stroke-width="1.8"/>
+  <text x="798" y="214" text-anchor="middle" font-size="12" font-weight="bold" fill="#7a5c00">OR</text>
+  <rect x="875" y="180" width="70" height="60" rx="4" fill="#eaf2fd" stroke="#1f6fd6" stroke-width="1.8"/>
+  <path d="M875,222 L885,228 L875,234 Z" fill="#1f6fd6"/>
+  <text x="910" y="206" text-anchor="middle" font-size="12" font-weight="bold" fill="#13518f">DFF</text>
+  <text x="910" y="222" text-anchor="middle" font-size="9" fill="#13518f">t_chain[3]</text>
+
+  <!-- t_chain horizontal connections (data) -->
+  <path d="M215,210 L270,210 L270,217 L285,217" fill="none" stroke="#111" stroke-width="1.6"/>   <!-- t0 -> OR1 -->
+  <path d="M350,210 L395,210" fill="none" stroke="#111" stroke-width="1.6" marker-end="url(#ar)"/>  <!-- OR1 -> DFF1 -->
+  <path d="M465,210 L510,210 L510,217 L525,217" fill="none" stroke="#111" stroke-width="1.6"/>   <!-- t1 -> OR2 -->
+  <path d="M590,210 L635,210" fill="none" stroke="#111" stroke-width="1.6" marker-end="url(#ar)"/>  <!-- OR2 -> DFF2 -->
+  <path d="M705,210 L750,210 L750,217 L765,217" fill="none" stroke="#111" stroke-width="1.6"/>   <!-- t2 -> OR3 -->
+  <path d="M830,210 L875,210" fill="none" stroke="#111" stroke-width="1.6" marker-end="url(#ar)"/>  <!-- OR3 -> DFF3 -->
+
+  <!-- ===================== MODE SELECT ===================== -->
+  <!-- final_or out -->
+  <path d="M945,210 L985,210" fill="none" stroke="#111" stroke-width="1.6"/>
+  <text x="965" y="202" text-anchor="middle" font-size="9" fill="#444">final_or</text>
+  <!-- branch up to INV -->
+  <path d="M985,210 L985,150 L1000,150" fill="none" stroke="#111" stroke-width="1.6"/>
+  <!-- INV (triangle + bubble) -->
+  <path d="M1000,135 L1000,165 L1030,150 Z" fill="#eee" stroke="#555" stroke-width="1.6"/>
+  <circle cx="1034" cy="150" r="4" fill="#fff" stroke="#555" stroke-width="1.4"/>
+  <text x="1012" y="128" text-anchor="middle" font-size="9" fill="#555">INV</text>
+  <!-- into MUX -->
+  <path d="M985,210 L1030,210 L1030,200 L1055,200" fill="none" stroke="#111" stroke-width="1.6"/>      <!-- final_or -> d0 -->
+  <path d="M1038,150 L1048,150 L1048,222 L1055,222" fill="none" stroke="#111" stroke-width="1.6"/>      <!-- final_nor -> d1 -->
+  <text x="1062" y="196" font-size="8.5" fill="#444">0</text>
+  <text x="1062" y="227" font-size="8.5" fill="#444">1</text>
+  <!-- MUX trapezoid -->
+  <polygon points="1055,184 1095,200 1095,220 1055,236" fill="#fde8d6" stroke="#c0651f" stroke-width="1.8"/>
+  <text x="1071" y="214" text-anchor="middle" font-size="10" font-weight="bold" fill="#9a4a10">MUX</text>
+  <!-- sel = accum_mode -->
+  <path d="M1075,300 L1075,232" fill="none" stroke="#1f6fd6" stroke-width="1.6" stroke-dasharray="5,3" marker-end="url(#arb)"/>
+  <text x="1075" y="316" text-anchor="middle" font-size="11" font-weight="bold" fill="#13518f">accum_mode</text>
+  <!-- t_i out -->
+  <path d="M1095,210 L1175,210" fill="none" stroke="#111" stroke-width="2" marker-end="url(#ar)"/>
+  <text x="1182" y="214" font-size="13" font-weight="bold" fill="#111">t_i</text>
+
+  <!-- ===================== BOTTOM: VALID SHIFT REGISTER ===================== -->
+  <text x="80" y="455" text-anchor="middle" font-size="12" font-weight="bold" fill="#0a8f7a">valid_in</text>
+  <path d="M80,462 L80,470 L135,470" fill="none" stroke="#0a8f7a" stroke-width="1.6" marker-end="url(#art)"/>
+
+  <!-- valid DFFs (aligned under the t_chain DFFs) -->
+  <g>
+    <rect x="145" y="440" width="70" height="60" rx="4" fill="#e7f7f3" stroke="#0a8f7a" stroke-width="1.8"/>
+    <path d="M145,482 L155,488 L145,494 Z" fill="#0a8f7a"/>
+    <text x="180" y="466" text-anchor="middle" font-size="12" font-weight="bold" fill="#076">DFF</text>
+    <text x="180" y="482" text-anchor="middle" font-size="9" fill="#076">v[0]</text>
+  </g>
+  <g>
+    <rect x="395" y="440" width="70" height="60" rx="4" fill="#e7f7f3" stroke="#0a8f7a" stroke-width="1.8"/>
+    <path d="M395,482 L405,488 L395,494 Z" fill="#0a8f7a"/>
+    <text x="430" y="466" text-anchor="middle" font-size="12" font-weight="bold" fill="#076">DFF</text>
+    <text x="430" y="482" text-anchor="middle" font-size="9" fill="#076">v[1]</text>
+  </g>
+  <g>
+    <rect x="635" y="440" width="70" height="60" rx="4" fill="#e7f7f3" stroke="#0a8f7a" stroke-width="1.8"/>
+    <path d="M635,482 L645,488 L635,494 Z" fill="#0a8f7a"/>
+    <text x="670" y="466" text-anchor="middle" font-size="12" font-weight="bold" fill="#076">DFF</text>
+    <text x="670" y="482" text-anchor="middle" font-size="9" fill="#076">v[2]</text>
+  </g>
+  <g>
+    <rect x="875" y="440" width="70" height="60" rx="4" fill="#e7f7f3" stroke="#0a8f7a" stroke-width="1.8"/>
+    <path d="M875,482 L885,488 L875,494 Z" fill="#0a8f7a"/>
+    <text x="910" y="466" text-anchor="middle" font-size="12" font-weight="bold" fill="#076">DFF</text>
+    <text x="910" y="482" text-anchor="middle" font-size="9" fill="#076">v[3]</text>
+  </g>
+
+  <!-- valid chain wires -->
+  <path d="M215,470 L395,470" fill="none" stroke="#0a8f7a" stroke-width="1.6" marker-end="url(#art)"/>
+  <path d="M465,470 L635,470" fill="none" stroke="#0a8f7a" stroke-width="1.6" marker-end="url(#art)"/>
+  <path d="M705,470 L875,470" fill="none" stroke="#0a8f7a" stroke-width="1.6" marker-end="url(#art)"/>
+  <path d="M945,470 L1095,470" fill="none" stroke="#0a8f7a" stroke-width="2" marker-end="url(#art)"/>
+  <text x="1102" y="474" font-size="13" font-weight="bold" fill="#0a8f7a">valid_out</text>
+
+  <!-- ===================== ANNOTATIONS ===================== -->
+  <!-- Row 0 callout -->
+  <path d="M180,300 L180,244" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="3,3"/>
+  <rect x="70" y="300" width="220" height="48" rx="6" fill="#fffbe6" stroke="#caa"/>
+  <text x="80" y="319" font-size="11" font-weight="bold">ROW 0 — register only</text>
+  <text x="80" y="336" font-size="10" fill="#555">no OR (nothing earlier to combine yet)</text>
+
+  <!-- Row 1 callout -->
+  <path d="M360,300 L360,244" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="3,3"/>
+  <rect x="300" y="300" width="330" height="48" rx="6" fill="#fffbe6" stroke="#caa"/>
+  <text x="312" y="319" font-size="11" font-weight="bold">ROW 1 — the repeating stage</text>
+  <text x="312" y="336" font-size="10" fill="#555">OR(running total, this row) &#8594; register.  Rows 2 &amp; 3 are identical copies.</text>
+
+  <!-- valid-pipeline note -->
+  <rect x="300" y="528" width="560" height="40" rx="6" fill="#e7f7f3" stroke="#0a8f7a"/>
+  <text x="312" y="546" font-size="11" font-weight="bold" fill="#076">VALID shift register — same length (4 stages) as the OR cascade,</text>
+  <text x="312" y="561" font-size="11" fill="#076">so valid_out strobes on the exact cycle t_i is finished for that A-row.</text>
+
+  <!-- footnote -->
+  <text x="30" y="612" font-size="10.5" fill="#777">All DFFs share clk + synchronous rst.  row_match_out[i] = 1 means the streamed A-row matched resident B-row i;  the OR cascade answers &#8220;did it match ANY B-row?&#8221;.</text>
+  <text x="30" y="628" font-size="10.5" fill="#777">For the real design this OR+register stage replicates up to row 49 (NUM_ROWS = 50).  Built structurally from dff / or2 / inv / mux2 in accumulation_array_struct.sv.</text>
+</svg>
