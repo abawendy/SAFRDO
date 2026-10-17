@@ -138,6 +138,4 @@ For the included 50-row text datasets, the documented reference results are:
 
 ## Background and sample data
 
-The dataflow builds on the **Kung–Lehman systolic architecture for relational database operations**. This project studies its FPGA implementation, runtime selection of four operations, and result-handling tradeoffs. The architecture and evaluation descriptions above summarize the final-year project; report drafts and internal working notes are excluded from this source release.
-
-Names and phone fields in the text CSV examples have been replaced with consistent synthetic labels while preserving equality relationships and match counts.
+The dataflow builds on the **Kung–Lehman systolic architecture for relational database operations**. This project studies its FPGA implementation, runtime selection of four operations, and result-handling tradeoffs. The architecture and evaluation descriptions above summarize the final-year project.
